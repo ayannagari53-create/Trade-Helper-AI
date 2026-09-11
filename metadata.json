@@ -1,0 +1,7 @@
+{
+  "name": "AI Trade Helper",
+  "description": "AI-powered chart screenshot analysis assistant providing explainable technical analysis, multi-timeframe scenarios, pattern detection, and interactive chart Q&A.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
