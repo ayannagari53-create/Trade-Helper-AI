@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { ChartAnalysisResult, MultiTimeframeSynthesisResult, AnalysisComparisonResult } from '../src/types';
+import { ChartAnalysisResult, MultiTimeframeSynthesisResult, AnalysisComparisonResult } from '../types';
 
 // Shared server-side Gemini client with aistudio-build telemetry
 function getGenAI(): GoogleGenAI | null {

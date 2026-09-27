@@ -4,12 +4,33 @@ import { BellRing, X, Check, ArrowUpRight, ArrowDownRight, Activity } from 'luci
 
 interface AlertToastProps {
   alert: PriceAlert | null;
-  onDismiss: () => void;
+  onDismiss?: () => void;
+  onClose?: () => void;
   onViewAnalysis?: (analysisId?: string) => void;
+  onNavigateToChart?: (alert: PriceAlert) => void;
 }
 
-export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss, onViewAnalysis }) => {
+export const AlertToast: React.FC<AlertToastProps> = ({
+  alert,
+  onDismiss,
+  onClose,
+  onViewAnalysis,
+  onNavigateToChart,
+}) => {
   if (!alert) return null;
+
+  const handleDismiss = () => {
+    if (onDismiss) onDismiss();
+    if (onClose) onClose();
+  };
+
+  const handleAction = () => {
+    if (onNavigateToChart) {
+      onNavigateToChart(alert);
+    } else if (onViewAnalysis && alert.analysisId) {
+      onViewAnalysis(alert.analysisId);
+    }
+  };
 
   const isSupport = alert.levelType.toLowerCase().includes('support');
   const isResistance = alert.levelType.toLowerCase().includes('resistance');
@@ -58,7 +79,7 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss, onView
 
           <button
             type="button"
-            onClick={onDismiss}
+            onClick={handleDismiss}
             className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
           >
             <X className="w-4 h-4" />
@@ -68,15 +89,15 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss, onView
         <div className="flex items-center justify-end gap-2 mt-3 pt-2 border-t border-slate-800/80">
           <button
             type="button"
-            onClick={onDismiss}
+            onClick={handleDismiss}
             className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             Dismiss
           </button>
-          {onViewAnalysis && alert.analysisId && (
+          {(onNavigateToChart || (onViewAnalysis && alert.analysisId)) && (
             <button
               type="button"
-              onClick={() => onViewAnalysis(alert.analysisId)}
+              onClick={handleAction}
               className="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors flex items-center gap-1 shadow-md shadow-emerald-950"
             >
               <span>View Chart</span>
